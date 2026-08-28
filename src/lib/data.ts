@@ -26,56 +26,11 @@ export type Badge = {
   value: string;
 };
 
-export const initialChildren: Child[] = [
-  {
-    id: "oscar",
-    name: "Oscar Nørgaard",
-    initials: "ON",
-    ageGroup: "U11",
-    position: "Midtbane",
-    club: "U11 Performance",
-    streakWeeks: 14,
-    attendancePct: 92,
-    sessionsCount: 47,
-    development: {
-      technique: { score: 78, delta: 6 },
-      tactics: { score: 64, delta: 9 },
-      physical: { score: 71, delta: 4 },
-    },
-    developmentHistory: [52, 48, 44, 38, 30, 22, 14],
-    developmentMonths: ["MAR", "APR", "MAJ", "JUN", "JUL", "AUG"],
-    badges: [
-      { id: "streak10", label: "10 uger i træk", unlocked: true, kind: "number", value: "10" },
-      { id: "iron", label: "Jernvilje", unlocked: true, kind: "check", value: "" },
-      { id: "firstcamp", label: "Første camp", unlocked: true, kind: "text", value: "1." },
-      { id: "streak20", label: "20 uger i træk", unlocked: false, kind: "number", value: "20" },
-    ],
-  },
-  {
-    id: "alma",
-    name: "Alma Nørgaard",
-    initials: "AN",
-    ageGroup: "U9",
-    position: "Angriber",
-    club: "U9 Udvikling",
-    streakWeeks: 6,
-    attendancePct: 85,
-    sessionsCount: 21,
-    development: {
-      technique: { score: 61, delta: 8 },
-      tactics: { score: 49, delta: 5 },
-      physical: { score: 66, delta: 7 },
-    },
-    developmentHistory: [58, 53, 48, 42, 37, 33, 30],
-    developmentMonths: ["MAR", "APR", "MAJ", "JUN", "JUL", "AUG"],
-    badges: [
-      { id: "streak5", label: "5 uger i træk", unlocked: true, kind: "number", value: "5" },
-      { id: "firsttraining", label: "Første træning", unlocked: true, kind: "text", value: "1." },
-      { id: "iron", label: "Jernvilje", unlocked: false, kind: "check", value: "" },
-      { id: "streak10", label: "10 uger i træk", unlocked: false, kind: "number", value: "10" },
-    ],
-  },
-];
+// Note: Child/Session/Enrollment/PaymentRecord instance data used to live
+// here as in-memory mock arrays. It's now real data in Supabase — see
+// supabase/migrations/ for the schema and scripts/seed-demo.mjs for the demo
+// dataset (same two players, same fixtures). src/lib/store.tsx fetches and
+// maps the live rows into these same shapes, so pages need no changes.
 
 // ---------------------------------------------------------------------------
 // Teams & billing
@@ -182,33 +137,6 @@ export type Enrollment = {
   status: PaymentStatus;
 };
 
-export const initialEnrollments: Enrollment[] = [
-  {
-    id: "e1",
-    childId: "oscar",
-    teamId: "tirsdag",
-    cycleStart: "1. august 2026",
-    cycleEnd: "1. november 2026",
-    status: "afventer",
-  },
-  {
-    id: "e2",
-    childId: "oscar",
-    teamId: "fredag-bk-union",
-    cycleStart: "1. august 2026",
-    cycleEnd: "18. september 2026",
-    status: "gratis",
-  },
-  {
-    id: "e3",
-    childId: "alma",
-    teamId: "fredag-bk-union",
-    cycleStart: "1. august 2026",
-    cycleEnd: "18. september 2026",
-    status: "gratis",
-  },
-];
-
 // ---------------------------------------------------------------------------
 // Sessions — one calendar occurrence of a team (or a standalone event like
 // Champions Cup). Attendance (signedUp) is tracked per child per date,
@@ -235,109 +163,10 @@ export type Session = {
   coach?: string;
 };
 
-export const initialSessions: Session[] = [
-  {
-    id: "s1",
-    childId: "oscar",
-    teamId: "tirsdag",
-    weekday: "TIR",
-    date: 25,
-    month: "AUG",
-    title: "Tirsdagshold",
-    time: "17:00–18:15",
-    location: "Fælledparken",
-    type: "training",
-    signedUp: true,
-    coach: "Mikkel",
-  },
-  {
-    id: "s2",
-    childId: "oscar",
-    teamId: "fredag-bk-union",
-    weekday: "FRE",
-    date: 28,
-    month: "AUG",
-    title: "Fredag · BK Union",
-    time: "16:30–17:45",
-    location: "Kløvermarken, bane 4",
-    type: "training",
-    signedUp: true,
-    coach: "Mikkel",
-  },
-  {
-    id: "s3",
-    childId: "alma",
-    teamId: "fredag-bk-union",
-    weekday: "FRE",
-    date: 28,
-    month: "AUG",
-    title: "Fredag · BK Union",
-    time: "16:30–17:45",
-    location: "Kløvermarken, bane 4",
-    type: "training",
-    signedUp: false,
-    coach: "Mikkel",
-  },
-  {
-    id: "s4",
-    childId: "oscar",
-    teamId: "soendag-workshop",
-    weekday: "SØN",
-    date: 30,
-    month: "AUG",
-    title: "Søndag Workshop",
-    time: "10:00–12:00",
-    location: "Valby Idrætspark",
-    type: "training",
-    signedUp: true,
-    price: 600,
-    paymentStatus: "afventer",
-    coach: "Sofie",
-  },
-  {
-    id: "s5",
-    childId: "oscar",
-    weekday: "LØR",
-    date: 29,
-    month: "AUG",
-    title: "Champions Cup",
-    time: "09:00–14:00",
-    location: "Valby Idrætspark",
-    type: "event",
-    signedUp: false,
-    price: 1000,
-    capacity: 40,
-    coach: "Alle U10–U12 hold",
-  },
-  {
-    id: "s6",
-    childId: "alma",
-    weekday: "LØR",
-    date: 29,
-    month: "AUG",
-    title: "Champions Cup",
-    time: "09:00–14:00",
-    location: "Valby Idrætspark",
-    type: "event",
-    signedUp: true,
-    price: 1000,
-    capacity: 40,
-    coach: "Alle U10–U12 hold",
-  },
-];
-
 export type PaymentRecord = {
   id: string;
   label: string;
   date: string;
   amount: number;
   method: string;
-};
-
-export const initialPaymentHistory: Record<string, PaymentRecord[]> = {
-  oscar: [
-    { id: "p1", label: "Tirsdagshold · 3 mdr (maj–jul)", date: "1. maj", amount: 3000, method: "MobilePay" },
-    { id: "p2", label: "Sommercamp · uge 27", date: "12. jun", amount: 1850, method: "MobilePay" },
-  ],
-  alma: [],
 };

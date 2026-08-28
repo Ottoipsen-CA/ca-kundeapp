@@ -27,6 +27,7 @@ export type Database = {
           created_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["parents"]["Insert"]>;
+        Relationships: [];
       };
       children: {
         Row: {
@@ -56,6 +57,7 @@ export type Database = {
           age_group: string;
         };
         Update: Partial<Database["public"]["Tables"]["children"]["Row"]>;
+        Relationships: [];
       };
       badges: {
         Row: {
@@ -74,6 +76,7 @@ export type Database = {
           kind: BadgeKindDb;
         };
         Update: Partial<Database["public"]["Tables"]["badges"]["Row"]>;
+        Relationships: [];
       };
       teams: {
         Row: {
@@ -92,6 +95,7 @@ export type Database = {
         };
         Insert: Database["public"]["Tables"]["teams"]["Row"];
         Update: Partial<Database["public"]["Tables"]["teams"]["Row"]>;
+        Relationships: [];
       };
       enrollments: {
         Row: {
@@ -111,6 +115,22 @@ export type Database = {
           status: PaymentStatusDb;
         };
         Update: Partial<Database["public"]["Tables"]["enrollments"]["Row"]>;
+        Relationships: [
+          {
+            foreignKeyName: "enrollments_child_id_fkey";
+            columns: ["child_id"];
+            isOneToOne: false;
+            referencedRelation: "children";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "enrollments_team_id_fkey";
+            columns: ["team_id"];
+            isOneToOne: false;
+            referencedRelation: "teams";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       sessions: {
         Row: {
@@ -140,6 +160,15 @@ export type Database = {
           type: SessionTypeDb;
         };
         Update: Partial<Database["public"]["Tables"]["sessions"]["Row"]>;
+        Relationships: [
+          {
+            foreignKeyName: "sessions_child_id_fkey";
+            columns: ["child_id"];
+            isOneToOne: false;
+            referencedRelation: "children";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       payment_history: {
         Row: {
@@ -159,6 +188,7 @@ export type Database = {
           method: string;
         };
         Update: Partial<Database["public"]["Tables"]["payment_history"]["Row"]>;
+        Relationships: [];
       };
       applications: {
         Row: {
@@ -176,13 +206,27 @@ export type Database = {
           birth_year: string;
         };
         Update: Partial<Database["public"]["Tables"]["applications"]["Row"]>;
+        Relationships: [];
       };
     };
+    Views: Record<string, never>;
     Functions: {
       toggle_session_signup: {
         Args: { p_session_id: string };
         Returns: Database["public"]["Tables"]["sessions"]["Row"];
       };
     };
+    Enums: Record<string, never>;
+    CompositeTypes: Record<string, never>;
   };
 };
+
+// Convenience aliases — `X["Row"]` gives the row shape for table X.
+export type Parent = Database["public"]["Tables"]["parents"];
+export type Child = Database["public"]["Tables"]["children"];
+export type Badge = Database["public"]["Tables"]["badges"];
+export type Team = Database["public"]["Tables"]["teams"];
+export type Enrollment = Database["public"]["Tables"]["enrollments"];
+export type Session = Database["public"]["Tables"]["sessions"];
+export type PaymentHistory = Database["public"]["Tables"]["payment_history"];
+export type Application = Database["public"]["Tables"]["applications"];
